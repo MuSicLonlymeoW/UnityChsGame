@@ -9,7 +9,10 @@ public class PedalTrigger : MonoBehaviour
     [Header("Trigger Settings")]
     public string triggerTag = "Stone"; // Tag for the objects that can trigger the pedal
     public bool isTriggered = false;   // To keep track of the pedal's state
-
+    
+    [Header("Audio Settings")]
+    public AudioClip collisionSound; // The sound effect to play on collision
+    private AudioSource audioSource;
     private void OnCollisionEnter(Collision collision)
     {
         // Check if the object colliding has the correct tag
@@ -27,10 +30,19 @@ public class PedalTrigger : MonoBehaviour
                     // Toggle the isTrigger property of the BoxCollider
                     ToggleBoxColliders(isTriggered);
                 }
+                PlaySoundEffect();
 
                 // Optional: Add visual/audio feedback
                 Debug.Log("Pedal activated by: " + collision.gameObject.name);
             }
+        }
+    }
+    private void PlaySoundEffect()
+    {
+        if (collisionSound != null && audioSource != null)
+        {
+            audioSource.clip = collisionSound;
+            audioSource.Play();
         }
     }
 
